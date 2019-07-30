@@ -1,11 +1,11 @@
 function getAnaplanList(flag) {
     var arr = [];
     if (Math.floor(flag / 2)) {
-        arr.concat(getModuleData());
+        arr = arr.concat(getModuleData());
     }
 
     if ( flag % 2 ) {
-        arr.concat(getLpListData());
+        arr = arr.concat(getLpListData());
     }
 
     return arr;
@@ -16,14 +16,14 @@ function getAnaplanProperty(flag, propName) {
     if (Math.floor(flag / 2)) {
         var tmpModules = getListByModuleName(propName);
         if (tmpModules) {
-            arr.concat(tmpModules);
+            arr = arr.concat(tmpModules);
         }
     }
 
     if (flag % 2) {
         var tmpModules = getLpPropertyByListName(propName);
         if (tmpModules) {
-            arr.concat(tmpModules);
+            arr = arr.concat(tmpModules);
         }
     }
 
@@ -85,25 +85,26 @@ function getLpListData() {
 }
 
 function getLpPropertyByListName(listName) {
-    var listData = getListData();
+    var listData = getLpListData();
     var i, j;
     for (i = 0; i < listData.length; i++) {
         if (listData[i].label == listName) {
             var listPropertyData = [];
-            var listData = anaplan.data.ModelContentCache.getHierarchyInfo(listData[i].id).propertiesLabelPage;
-            var format = anaplan.data.ModelContentCache.getHierarchyInfo(listData[i].id).propertiesInfo[0].format.dataType;
-            for (j = 0; j < listData.entityLongIds[0].length; j++) {
+            var hierachyInfo = anaplan.data.ModelContentCache.getHierarchyInfo(listData[i].id);
+            var propertyData = hierachyInfo.propertiesLabelPage;
+            for (j = 0; j < propertyData.entityLongIds.length; j++) {
+                var format = hierachyInfo.propertiesInfo[j].format.dataType;
                 var tmp = {};
-                tmp.name = listData.labels[0][j];
+                tmp.name = propertyData.labels[j];
 
                 tmp.type = "lpProp";
-                tmp.label = listData.labels[0][j] + " (" + format + ")";
+                tmp.label = propertyData.labels[j] + " (" + format + ")";
                 listPropertyData[j] = tmp;
             }
             return listPropertyData;
         }
     }
-    return false
+    return false;
 }
 
 if (!document.getElementById("ext-to-page")) {

@@ -482,7 +482,7 @@ function initHighLighter() {
       if (gConfigData.bpxModuleAC || gConfigData.bpxPropAC) {
 
         // create receiver element if not exists
-        if (!document.getElementById("page-to-ex")) {
+        if (!document.getElementById("page-to-ext")) {
           var a = document.createElement("DIV");
           a.setAttribute("id", "page-to-ext");
           a.addEventListener('click', function (e) {
@@ -573,7 +573,7 @@ function initHighLighter() {
                   e.stopPropagation();
                   var replaceText = this.getElementsByTagName("input")[0].value;
                   var type = this.getElementsByTagName("input")[0].getAttribute("data-type");
-                  if (type == "module" || type == "list") {
+                  if (type == "module" || type == "list" || type == "lpList" || type == "lpProp") {
                     replaceText = "'" + replaceText.replace("'", "''") + "'";
                   }
                   replaceWord(el, caretPos[0], replaceText);
@@ -739,7 +739,7 @@ function initHighLighter() {
 
   function extGetAnaplanList(flag) {
     // if modelData is already initialized then return
-    if (acdata.modelData != null) return;
+    // if (acdata.modelData != null) return;
 
     document.getElementById('ext-to-page').setAttribute('data-action', 'getAnaplanList(' + flag + ')');
     document.getElementById('ext-to-page').setAttribute('data-target', 'modelData');
