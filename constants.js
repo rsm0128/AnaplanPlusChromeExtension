@@ -3,6 +3,7 @@ var gDefaultSetting = {
   bpxIndent : false,
   bpxAutoComplete : false,
   bpxModuleAC : false,
+  bpxPropAC : false,
   bpxGrid : false,
   bpxTooltip: false,
   bpxSnippet: false,

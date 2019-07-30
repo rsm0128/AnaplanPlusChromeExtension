@@ -3,6 +3,7 @@ function save_options() {
   var indent = document.getElementById('apply-indent').checked;
   var autocomplete = document.getElementById('apply-autocomplete').checked;
   var moduleac = document.getElementById('apply-moduleac').checked;
+  var propac = document.getElementById('apply-propac').checked;
   var grid = document.getElementById('apply-grid').checked;
   var tooltip = document.getElementById('apply-tooltip').checked;
   var snippet = document.getElementById('apply-snippet').checked;
@@ -46,6 +47,7 @@ function save_options() {
     bpxIndent: indent,
     bpxAutoComplete: autocomplete,
     bpxModuleAC: moduleac,
+    bpxPropAC: propac,
     bpxGrid: grid,
     bpxTooltip: tooltip,
     bpxSnippet: snippet,
@@ -98,6 +100,7 @@ function restore_options() {
     document.getElementById('apply-indent').checked = items.bpxIndent;
     document.getElementById('apply-autocomplete').checked = items.bpxAutoComplete;
     document.getElementById('apply-moduleac').checked = items.bpxModuleAC;
+    document.getElementById('apply-propac').checked = items.bpxPropAC;
     document.getElementById('apply-tooltip').checked = items.bpxTooltip;
     document.getElementById('apply-snippet').checked = items.bpxSnippet;
     document.getElementById('decimal-txt').value = items.decimal_txt;
@@ -174,6 +177,13 @@ function autocomplete_change() {
 function moduleac_change() {
   var elem = document.getElementById("apply-moduleac");
   var action = elem.checked ? 'apply-moduleac':'disable-moduleac';
+
+  handle_action(action);
+}
+
+function propac_change() {
+  var elem = document.getElementById("apply-propac");
+  var action = elem.checked ? 'apply-propac':'disable-propac';
 
   handle_action(action);
 }
@@ -259,6 +269,7 @@ document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('apply-indent').addEventListener('change', indent_change);
   document.getElementById('apply-autocomplete').addEventListener('change', autocomplete_change);
   document.getElementById('apply-moduleac').addEventListener('change', moduleac_change);
+  document.getElementById('apply-propac').addEventListener('change', propac_change);
   document.getElementById('apply-grid').addEventListener('change', grid_change);
   document.getElementById('apply-tooltip').addEventListener('change', tooltip_change);
   document.getElementById('apply-snippet').addEventListener('change', snippet_change);

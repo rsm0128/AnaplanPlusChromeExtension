@@ -450,7 +450,7 @@ function initHighLighter() {
   $(oldTextarea).before("<style id='bpx-color-style' disabled>.bpx-bracket-wrong {color: " + bpx_bracket_wrong + ";} .bpx-bracket-0 {color: " + bpx_bracket_0 + ";} .bpx-bracket-1 {color: " + bpx_bracket_1 + ";} .bpx-bracket-2 {color: " + bpx_bracket_2 + ";} .bpx-bracket-3 {color: " + bpx_bracket_3 + ";} .bpx-bracket-4 {color: " + bpx_bracket_4 + ";}" +
     " .bpx-ite-0 {color: " + bpx_ite_0 + ";} .bpx-ite-1 {color: " + bpx_ite_1 + ";} .bpx-ite-2 {color: " + bpx_ite_2 + ";} .bpx-ite-3 {color: " + bpx_ite_3 + ";} .bpx-ite-4 {color: " + bpx_ite_4 + ";} .bpx-func {color: " + bpx_func + ";} .bpx-brafunc{color: " + bpx_brafunc + "; font-weight: bold;} .bpx-brafunc, .bpx-bracket, .bpx-ite, .bpx-func, .bpx-braopen, .bpx-braclose{font-weight:bold;} .bpx-braContentStart{color: " + bpx_braContentStart + ";font-weight: bold;} .bpx-logic{font-weight:bold; color:" + bpx_logic + ";} .bpx-math{font-weight:bold; color:" + bpx_math + ";} .bpx-syntax{font-weight:bold; color:" + bpx_syntax + ";}</style>");
   $(oldTextarea).before("<style id='bpx-indentation-style' disabled>.bpx-ite {display: block;} .bpx-indentStart {display:block; margin-left: 30px;}</style>");
-  $(oldTextarea).before("<style id='bpx-autocomplete-style'>.formulaEditorExpressionCell{position:relative}.autocomplete-items { position: absolute; max-height: 400px; overflow-y: auto; border: 1px solid #d4d4d4; z-index: 99; top: 0; min-width: 180px; font-size:10px; } .autocomplete-items:empty{border-bottom: none; border-top: none;} .autocomplete-items div:first-child{border-top: 1px solid #d4d4d4;} .autocomplete-items div { padding: 5px 8px; cursor: pointer; background-color: #fff; border-bottom: 1px solid #d4d4d4; } .autocomplete-items div:hover { background-color: #abe3ff; } .autocomplete-active { background-color: #2BB8FF !important; color: #ffffff; } .autocomplete-items .ac-item:before { color: #33f; border: 1px solid #33f; font-size: 12px; padding: 0 3px; margin-right: 6px; text-align: center; width: 8px; display: inline-block; } .autocomplete-items .item-func:before{ content: 'fx'; }.autocomplete-items .item-module:before{ content: 'M'; }.autocomplete-items .item-list:before{ content: 'LI'; }</style>");
+  $(oldTextarea).before("<style id='bpx-autocomplete-style'>.formulaEditorExpressionCell{position:relative}.autocomplete-items { position: absolute; max-height: 400px; overflow-y: auto; border: 1px solid #d4d4d4; z-index: 99; top: 0; min-width: 180px; font-size:10px; } .autocomplete-items:empty{border-bottom: none; border-top: none;} .autocomplete-items div:first-child{border-top: 1px solid #d4d4d4;} .autocomplete-items div { padding: 5px 8px; cursor: pointer; background-color: #fff; border-bottom: 1px solid #d4d4d4; } .autocomplete-items div:hover { background-color: #abe3ff; } .autocomplete-active { background-color: #2BB8FF !important; color: #ffffff; } .autocomplete-items .ac-item:before { color: #33f; border: 1px solid #33f; font-size: 12px; padding: 0 3px; margin-right: 6px; text-align: center; width: 8px; display: inline-block; } .autocomplete-items .item-func:before{ content: 'fx'; }.autocomplete-items .item-module:before{ content: 'M'; }.autocomplete-items .item-list:before{ content: 'LI'; }.autocomplete-items .item-lpList:before{ content: 'L'; }.autocomplete-items .item-lpProp:before{ content: 'P'; }</style>");
 
   document.getElementById("bpx-indentation-style").disabled = true;
 
@@ -463,7 +463,7 @@ function initHighLighter() {
     let selection = getSelectionCharacterOffsetWithin(el);
 
     // autocomplete function
-    if (gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC) {
+    if (gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC || gConfigData.bpxPropAC) {
       var caretPos = getCaretPosition(this);
       var val = returnWord(el.textContent, caretPos[0]);
 
@@ -477,9 +477,9 @@ function initHighLighter() {
 
       // flag
       var flList = false;
-      var moduleName = '';
+      var listName = '';
       var key = '';
-      if (gConfigData.bpxModuleAC) {
+      if (gConfigData.bpxModuleAC || gConfigData.bpxPropAC) {
 
         // create receiver element if not exists
         if (!document.getElementById("page-to-ex")) {
@@ -496,20 +496,23 @@ function initHighLighter() {
         }
 
         // init moduel data
-        extGetModuleData();
+        var flag = 0;
+        if (gConfigData.bpxModuleAC) flag += 2;
+        if (gConfigData.bpxPropAC) flag += 1;
+        extGetAnaplanList(flag);
 
         // if period inputed then init list data
         if (e.data == "." || el.textContent[caretPos[0] - val.length - 1] == ".") {
-          moduleName = returnModuleName(el.textContent, caretPos[0] - val.length);
-          if (moduleName) {
+          listName = returnListName(el.textContent, caretPos[0] - val.length);
+          if (listName) {
             arr = [];
-            extGetListByModuleName(moduleName);
+            extGetAnaplanProperty(flag, listName);
             flList = true;
           }
         }
 
         if (flList) {
-          key = "l_" + moduleName;
+          key = "l_" + listName;
         } else {
           key = "modelData";
         }
@@ -517,7 +520,7 @@ function initHighLighter() {
       if (val || flList) {
         var count = 0;
         function waitForAcData() {
-          if (gConfigData.bpxModuleAC && !(key in acdata)) {
+          if ((gConfigData.bpxModuleAC || gConfigData.bpxPropAC) && !(key in acdata)) {
             if (count > 4) {
               console.log('timeout');
               return;
@@ -525,7 +528,7 @@ function initHighLighter() {
             setTimeout(waitForAcData, 250);
             count++;
           } else {
-            if (gConfigData.bpxModuleAC) {
+            if (gConfigData.bpxModuleAC || gConfigData.bpxPropAC) {
               arr = acdata[key].concat(arr);
             }
 
@@ -613,7 +616,7 @@ function initHighLighter() {
     }
 
     // auto complete
-    if (gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC) {
+    if (gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC || gConfigData.bpxPropAC) {
       var x = document.getElementById(this.id + "autocomplete-list");
       // if (x) x = x.getElementsByTagName("div");
       // if autocomplete is not available then return false;
@@ -734,20 +737,20 @@ function initHighLighter() {
     }
   }
 
-  function extGetModuleData() {
+  function extGetAnaplanList(flag) {
     // if modelData is already initialized then return
     if (acdata.modelData != null) return;
 
-    document.getElementById('ext-to-page').setAttribute('data-action', 'getModuleData()');
+    document.getElementById('ext-to-page').setAttribute('data-action', 'getAnaplanList(' + flag + ')');
     document.getElementById('ext-to-page').setAttribute('data-target', 'modelData');
     document.getElementById('ext-to-page').click();
   }
 
-  function extGetListByModuleName(moduleName) {
-    // if (('l_' + moduleName) in acdata) return;
-    if (('l_' + moduleName) in acdata) delete acdata['l_' + moduleName];
-    document.getElementById('ext-to-page').setAttribute('data-action', 'getListByModuleName("' + moduleName + '")');
-    document.getElementById('ext-to-page').setAttribute('data-target', 'l_' + moduleName);
+  function extGetAnaplanProperty(flag, listName) {
+    // if (('l_' + listName) in acdata) return;
+    if (('l_' + listName) in acdata) delete acdata['l_' + listName];
+    document.getElementById('ext-to-page').setAttribute('data-action', 'getAnaplanProperty(' + flag + ',"' + listName + '")');
+    document.getElementById('ext-to-page').setAttribute('data-target', 'l_' + listName);
     document.getElementById('ext-to-page').click();
   }
   /*execute a function when someone clicks in the document:*/
@@ -761,7 +764,7 @@ function initHighLighter() {
 }
 
 
-function returnModuleName(text, caretPos) {
+function returnListName(text, caretPos) {
   if (text[caretPos - 2] != "'") return false;
   var preText = text.substring(0, caretPos);
   var words = preText.split(/'/);

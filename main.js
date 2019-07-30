@@ -91,7 +91,8 @@ function handleHighlighter(e) {
   if (!gConfigData.bpxColor &&
     !gConfigData.bpxIndent &&
     !gConfigData.bpxAutoComplete &&
-    !gConfigData.bpxModuleAC
+    !gConfigData.bpxModuleAC &&
+    !gConfigData.bpxPropAC
   ) return;
   if ($(e.target).closest('.dijitTabInner.qa-tab').length) {
     setTimeout(function () {
@@ -116,7 +117,7 @@ function handleHighlighter(e) {
   let curValue = $(oldTextarea).val();
   if (initHighLighter() || curValue != gPrevValue) updateFormatting(curValue);
 
-  toggleHighlighter(gConfigData.bpxColor || gConfigData.bpxIndent || gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC);
+  toggleHighlighter(gConfigData.bpxColor || gConfigData.bpxIndent || gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC || gConfigData.bpxPropAC);
   applyColor(gConfigData.bpxColor);
   applyIndent(gConfigData.bpxIndent);
   applyAutocomplete(gConfigData.bpxAutoComplete);
@@ -174,6 +175,14 @@ chrome.extension.onMessage.addListener(
         break;
       case 'disable-moduleac':
         gConfigData.bpxModuleAC = false;
+        refreshHighlighter();
+        break;
+      case 'apply-propac':
+        gConfigData.bpxPropAC = true;
+        refreshHighlighter();
+        break;
+      case 'disable-propac':
+        gConfigData.bpxPropAC = false;
         refreshHighlighter();
         break;
       case 'apply-grid':
@@ -241,8 +250,8 @@ chrome.extension.onMessage.addListener(
 
 function refreshHighlighter() {
   if ($(oldTextarea).length == 0) return;
-  if (initHighLighter() && (gConfigData.bpxColor || gConfigData.bpxIndent || gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC)) updateFormatting($(oldTextarea).val());
-  toggleHighlighter(gConfigData.bpxColor || gConfigData.bpxIndent || gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC);
+  if (initHighLighter() && (gConfigData.bpxColor || gConfigData.bpxIndent || gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC || gConfigData.bpxPropAC)) updateFormatting($(oldTextarea).val());
+  toggleHighlighter(gConfigData.bpxColor || gConfigData.bpxIndent || gConfigData.bpxAutoComplete || gConfigData.bpxModuleAC || gConfigData.bpxPropAC);
 
   applyColor(gConfigData.bpxColor);
   applyIndent(gConfigData.bpxIndent);

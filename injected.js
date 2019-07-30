@@ -1,3 +1,34 @@
+function getAnaplanList(flag) {
+    var arr = [];
+    if (Math.floor(flag / 2)) {
+        arr.concat(getModuleData());
+    }
+
+    if ( flag % 2 ) {
+        arr.concat(getLpListData());
+    }
+
+    return arr;
+}
+
+function getAnaplanProperty(flag, propName) {
+    var arr = [];
+    if (Math.floor(flag / 2)) {
+        var tmpModules = getListByModuleName(propName);
+        if (tmpModules) {
+            arr.concat(tmpModules);
+        }
+    }
+
+    if (flag % 2) {
+        var tmpModules = getLpPropertyByListName(propName);
+        if (tmpModules) {
+            arr.concat(tmpModules);
+        }
+    }
+
+    return arr;
+}
 
 function getModuleData() {
     var moduleLabels = anaplan.data.ModelContentCache._modelInfo.modulesLabelPage.labels[0];
@@ -32,6 +63,44 @@ function getListByModuleName(moduleName) {
                 moduleListData[j] = tmp;
             }
             return moduleListData;
+        }
+    }
+    return false
+}
+
+function getLpListData() {
+    var listLabels = anaplan.data.ModelContentCache._customHierarchiesLabelPage.labels[0];
+    var listIds = anaplan.data.ModelContentCache._customHierarchiesLabelPage.entityLongIds[0];
+    var i;
+    var listData = [];
+    for (i = 0; i < listIds.length; i++) {
+        var tmp = {};
+        tmp.name = listLabels[i];
+        tmp.type = "lpList";
+        tmp.label = listLabels[i];
+        tmp.id = listIds[i];
+        listData[i] = tmp;
+    }
+    return listData;
+}
+
+function getLpPropertyByListName(listName) {
+    var listData = getListData();
+    var i, j;
+    for (i = 0; i < listData.length; i++) {
+        if (listData[i].label == listName) {
+            var listPropertyData = [];
+            var listData = anaplan.data.ModelContentCache.getHierarchyInfo(listData[i].id).propertiesLabelPage;
+            var format = anaplan.data.ModelContentCache.getHierarchyInfo(listData[i].id).propertiesInfo[0].format.dataType;
+            for (j = 0; j < listData.entityLongIds[0].length; j++) {
+                var tmp = {};
+                tmp.name = listData.labels[0][j];
+
+                tmp.type = "lpProp";
+                tmp.label = listData.labels[0][j] + " (" + format + ")";
+                listPropertyData[j] = tmp;
+            }
+            return listPropertyData;
         }
     }
     return false
