@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Formatting Formula</title>
+  <script type="text/javascript" src="constants.js"></script>
+  <script type="text/javascript" src="popup.js"></script>
+  <style>
+    .content-area{text-align: left; margin-left: 20px; margin-bottom: 10px; line-height: 15px; font-family: Helvetica; font-size: 11px;}
+    .content-area input{display:inline-block; margin-bottom: 5px; font-family: Helvetica; font-size: 11px;}
+    .content-area #btn-format-collapsible{font-size: 9px; display:inline-block; margin-top: 0px; margin-left: 20px; margin-bottom: 10px; font-family: Helvetica}
+    .content-area #btn-style-collapsible{font-size: 9px; display:inline-block; margin-top: 0px; margin-left: 20px; margin-bottom: 10px; font-family: Helvetica}
+    input[type="color"]{height:14px; width:18px; border-radius: 5px; font-family: Helvetica; font-size: 11px;}
+    .content-area #format-panel{font-size: 9px; column-count: 1;}
+    .content-area #style-panel{font-size: 9px; column-count: 2;}
+  </style>
+</head>
+
+<body style="width: 240px;">
+  <div style="text-align: center">
+    <img src="logobig.png" height="30px" style="margin-top:10px; margin-bottom: -10px">
+    <p style="margin-top:10px; margin-bottom: 10px; color: #9C9C9C; font-family: Helvetica"><i>Model Builder Edition</i></p>
+    <div class="content-area">
+      <input type="checkbox" id="apply-color" name="formatting-yn"> Syntax Highlighter<br>
+      <input type="checkbox" id="apply-indent" name="indent-yn";> Formula Indentation<br>
+      <input type="checkbox" id="apply-autocomplete" name="autocomplete-yn";> Function Helper<br>
+      <input type="checkbox" id="apply-moduleac" name="moduleac-yn";> Module Autocomplete<br>
+      <input type="checkbox" id="apply-grid" name="grid-yn";> Dashboard Grid<br>
+      <input type="checkbox" id="apply-snippet" name="snippet-yn"> Format Toolbar<br>
+      <button id="btn-format-collapsible">Edit formats...</button><br>
+      <div id="format-panel" style="display:none">
+        <input type="text" id="decimal-txt" style="width:120px; height:12px; font-size: 8px" placeholder="COMMA/FULL_STOP"> Decimal Sep.<br>
+        <input type="text" id="thousands-txt" style="width:120px; height:12px; font-size: 8px" placeholder="SPACE/COMMA/FULL_STOP"> Thousands Sep.<br>
+        <input type="text" id="negative-txt" style="width:120px; height:12px; font-size: 8px" placeholder="MINUS_SIGN/PARENTHESES"> Negative Sign<br>
+        <input type="text" id="zero-txt" style="width:120px; height:12px; font-size: 8px" placeholder="ZERO/BLANK/HYPHEN"> Zero Format<br>
+      </div>
+      <input type="checkbox" id="disable-link" name="link-yn"> Disabled Logo Link<br>
+      <input type="checkbox" id="hide-map" name="map-yn"> Hide Model Map<br>
+      <input type="checkbox" id="apply-tooltip" name="tooltip-yn"> Cells Tooltip<br>
+      <input type="checkbox" id="apply-toaster" name="toaster-yn"> Bottom-Right Alerts<br>
+      <input type="checkbox" id="apply-palette" name="palette-yn"> Improved Colors<br>
+      <button id="btn-style-collapsible">Edit colors...</button>
+      <div id="style-panel" style="display:none">
+        <input type="text" id="tbl-font-family" style="width:60px; height:12px; font-size: 8px" placeholder="helvetica"> Font<br>
+        <input type="text" id="tbl-font-size" style="width:20px; height:12px; font-size: 8px" placeholder="11"> Font Size<br>
+        <input type="color" id="label-txt-color"> Labels<br>
+        <hr>
+        <input type="color" id="nav-back-color"> Navbar Bg<br>
+        <input type="color" id="nav-button-color"> Navbar Btn <br>
+        <input type="color" id="nav-btntxt-color"> Navbar Txt<br>
+        <input type="color" id="slider-back-color"> Slider Bg<br>
+        <input type="color" id="slider-txt-color"> Slider Txt<br>
+        <hr>
+        <input type="color" id="settings-selected-color"> Selection<br>
+        <input type="color" id="settings-hover-color"> Hover<br>
+        <input type="color" id="th-back-color"> Col Head Bg<br>
+        <input type="color" id="th-txt-color"> Col Head Txt<br>
+        <input type="color" id="editable-cells-color"> Edit Cells Bg<br>
+        <input type="color" id="editable-txt-color"> Edit Cells Txt<br>
+        <input type="color" id="sum1-cells-color"> Sum1 Bg<br>
+        <input type="color" id="sum2-cells-color"> Sum2 Bg<br>
+        <input type="color" id="sum3-cells-color"> Sum3 Bg<br>
+        <hr>
+        <input type="color" id="h1-txt-color"> H1 Txt<br>
+        <input type="color" id="h1-bg-color"> H1 Bg<br>
+        <input type="text" id="h1-txt-align" style="width:40px; height:12px; font-size: 8px" placeholder="left"> H1 Align<br>
+        <input type="color" id="h2-txt-color"> H2 Txt<br>
+        <input type="color" id="h2-bg-color"> H2 Bg<br>
+        <input type="text" id="h2-txt-align" style="width:40px; height:12px; font-size: 8px" placeholder="left"> H2 Align<br>
+        <input type="color" id="info-bg-color"> Info Bg<br>
+      </div>
+    </div>
+    <hr>
+    <p style="font-size: 10px; margin-bottom: 10px; font-family: Helvetica">Unofficial extension created by :<br> <a href="https://www.bipixconsulting.com/a-for-anaplan" target="_blank">BIPIX consulting</a></p>
+  </div>
+</body>
+
+</html>
