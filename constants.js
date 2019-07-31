@@ -40,7 +40,8 @@ var gDefaultSetting = {
   tbl_font_family: 'helvetica',
   tbl_font_size: '11',
   th_back_color: '#F1F1F1',
-  th_txt_color: '#000000'
+  th_txt_color: '#000000',
+  ntf_version: 1
   }
 
 var gAutocompleteList = [

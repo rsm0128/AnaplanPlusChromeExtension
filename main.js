@@ -261,6 +261,7 @@ function refreshHighlighter() {
 function readSettings() {
   chrome.storage.local.get(gDefaultSetting, function (items) {
     gConfigData = items;
+    checkNotification();
   });
 }
 

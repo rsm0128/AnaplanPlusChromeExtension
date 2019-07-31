@@ -32,6 +32,7 @@
         "module-modelmap.js",
         "module-tooltip.js",
         "module-snippet.js",
+        "module-notification.js",
         "main.js"
       ]
     }
