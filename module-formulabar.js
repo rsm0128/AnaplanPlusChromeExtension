@@ -775,14 +775,14 @@ function returnListName(text, caretPos) {
 function returnWord(text, caretPos) {
   if (text.length > caretPos && isLetter(text[caretPos])) return false;
   var preText = text.substring(0, caretPos);
-  var words = preText.split(/[^A-Za-z&0-9]/);
+  var words = preText.split(/[\s\(\[\.\,:']/);
   return words[words.length - 1]; //return last word
 }
 
 function replaceWord(element, caretPos, replaceText) {
   var text = element.textContent;
   var preText = text.substring(0, caretPos);
-  var n = preText.search(/[^A-Za-z&0-9]([A-Za-z&0-9]*$)/);
+  var n = preText.search(/[\s\(\[\.\,:']([^\s\(\[\.\,:']*$)/);
   element.textContent = text.substring(0, n + 1) + replaceText + text.substring(caretPos);
   caretPos = n + replaceText.length + 1;
   updateFormatting(element.textContent);
