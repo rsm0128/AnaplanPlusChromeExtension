@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "A+ for Anaplan (Model Builder Edition)",
   "description": "Unofficial Chrome extension for a better Model Builder experience",
   "icons": {
@@ -11,8 +11,10 @@
   "author": "@bipix",
   "permissions": [
     "activeTab",
-    "https://*.app.anaplan.com/*",
     "storage"
+  ],
+  "host_permissions": [
+    "https://*.app.anaplan.com/*"
   ],
   "content_scripts": [
     {
@@ -38,10 +40,17 @@
     }
   ],
   "web_accessible_resources": [
-    "injected.js"
+    {
+      "resources": [
+        "injected.js"
+      ],
+      "matches": [ "https://*.app.anaplan.com/*" ]
+    }
   ],
-  "browser_action": {
-    "default_icon": "icon128.png",
+  "action": {
+    "default_icon": {
+      "128": "icon128.png"
+    },
     "default_title": "A+ for Anaplan",
     "default_popup": "popup.html"
   }
